@@ -1,17 +1,18 @@
 research_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Führe eine tiefgehende Online-Recherche durch, um die neusten Nachrichten, Presseartikel und Blog-Posts zur deutschen Startup-Szene zu finden. Suche nach Schlüsselwörter wie "deutsche Startups", "Finanzierungsrunden Deutschland", "Tech-Innovationen", "German venture capital". 
+    Filter nach den wichtigsten und aktuellsten Meldungen der letzten 24 Stunden.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
+    Eine Liste von zehn relevantesten Nachrichten-Headlines, jeweils mit 10 Sätzen Zusammenfassung des Inhalts und dem zugehörgen URL-Link. Die Ausgabe sollte klar und strukturiert sein, bereit für die Übergabe an den reporter.
   agent: researcher
+  output_file: output/research.md
 
 reporting_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Nimm die recherchierte Liste von Nachrichten-Headlines und Links und erstelle daraus eine kurze, professionelle E-Mail-Zusammenfassung. Jede Nachricht sollte in 5 Sätzen zusammengefasst werden. Beginn die E-Mail mit einer motivierenden Einleitung und beende sie mit einem passenden Gruß. Das Ziel ist es, den Empfänger schnell und effizient über die wichtigsten Geschehnisse des Tages zu informieren.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    Ein vollständiger, zur E-Mail-Versendung bereiter Text im Markdown-Format, der die wichtigsten Nachrichten aus der deutschen Startup-Szene des Tages zusammenfasst. Der Text muss klar formatiert sein und einen professionellen und motivierenden Ton haben.
+  context:
+    - research_task
+  agent: reporter
+  output_file: output/report.md
