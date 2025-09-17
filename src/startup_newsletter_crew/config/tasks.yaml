@@ -1,17 +1,46 @@
 research_task:
   description: >
-    Führe eine tiefgehende Online-Recherche durch, um die neusten Nachrichten, Presseartikel und Blog-Posts zur deutschen Startup-Szene zu finden. Suche nach Schlüsselwörter wie "deutsche Startups", "Finanzierungsrunden Deutschland", "Tech-Innovationen", "German venture capital". 
-    Filter nach den wichtigsten und aktuellsten Meldungen der letzten 24 Stunden.
+    Use the search tool to find the top 10 most recent news articles about the German startup scene. with a focus on funding, new products and policy.
   expected_output: >
-    Eine Liste von zehn relevantesten Nachrichten-Headlines, jeweils mit 10 Sätzen Zusammenfassung des Inhalts und dem zugehörgen URL-Link. Die Ausgabe sollte klar und strukturiert sein, bereit für die Übergabe an den reporter.
+    A structured JSON object containing a list of the top 10 most relevant news articles. Each item in the list should contain the article's title, a brief snippet and the URL.
+    Example format:
+    [
+      {
+        "title": "Article Title 1",
+        "snippet": "Brief summary of the article...",
+        "url": "https://linktoarticle1.com"
+      },
+      ...
+    ]
+    Important: Do not return any other information. Just the JSON
   agent: researcher
-  output_file: output/research.md
+  output_file: output/research.json
+
+content_understanding:
+  description: >
+    Given the list of the relevant articles from the previous task, use the scraping too to get the full, clean text for each article.
+  expected_output: >
+    A markdown-formatted list where each item is a complete, clean text of a single news article. The format shuold be:
+    ## Article Title 1
+    - Source: [URL]
+    [Full article body text here]
+  agent: researcher
+  output_file: output/articles.md
 
 reporting_task:
   description: >
-    Nimm die recherchierte Liste von Nachrichten-Headlines und Links und erstelle daraus eine kurze, professionelle E-Mail-Zusammenfassung. Jede Nachricht sollte in 5 Sätzen zusammengefasst werden. Beginn die E-Mail mit einer motivierenden Einleitung und beende sie mit einem passenden Gruß. Das Ziel ist es, den Empfänger schnell und effizient über die wichtigsten Geschehnisse des Tages zu informieren.
+    Given the full text of the articles, synthesize the information into a concise and insightful daily briefing.
   expected_output: >
-    Ein vollständiger, zur E-Mail-Versendung bereiter Text im Markdown-Format, der die wichtigsten Nachrichten aus der deutschen Startup-Szene des Tages zusammenfasst. Der Text muss klar formatiert sein und einen professionellen und motivierenden Ton haben.
+    A professional, well-structured daily news briefing in Markdown.
+    The briefing should have a main headline, followed by a brief summary paragraph, and then a bullteed list of the key takesaways from each article.
+    The tone should be formal and informative.
+
+    Example:
+    ### headline
+    Summary paragraph of the day's news.
+    Key Takeaways:
+    - xx
+    - xx
   context:
     - research_task
   agent: reporter

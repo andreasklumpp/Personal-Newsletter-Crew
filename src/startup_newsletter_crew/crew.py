@@ -1,7 +1,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
-from crewai_tools import WebsiteSearchTool
+from crewai_tools import ScrapeWebsiteTool, SerperDevTool
 from typing import List
 
 
@@ -12,13 +12,15 @@ class StartupNewsletterCrew():
     agents: List[BaseAgent]
     tasks: List[Task]
 
-    website_tool = WebsiteSearchTool(website="https://www.deutsche-startups.de/taeglich/")
+    # website_tool = WebsiteSearchTool(website="https://www.deutsche-startups.de/taeglich/")
+    serper_tool = SerperDevTool()
+    scrape_tool = ScrapeWebsiteTool()
 
     @agent
     def researcher(self) -> Agent:
         return Agent(
             config=self.agents_config['researcher'], 
-            tools=[self.website_tool],
+            tools=[self.scrape_tool, self.serper_tool],
             verbose=True
         )
 
@@ -33,6 +35,12 @@ class StartupNewsletterCrew():
     def research_task(self) -> Task:
         return Task(
             config=self.tasks_config['research_task'], 
+        )
+    
+    @task
+    def context_understanding_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['content_understanding'], 
         )
 
     @task
